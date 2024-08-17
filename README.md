@@ -53,3 +53,112 @@ CommonJS
 UMD
 ECMAScript(ES)
 
+### Exporting from a module
+
+A module will typically export values likes numbers,strings or functionality in terms of classes or functions.
+
+The export keyword is prefixed to a declarations like var,let,const or function() or class.
+
+Ways to export:
+
+export const alpha="I am Alpha";
+
+const beta="I am Beta";
+export {beta};
+
+const gamma="I am gamma";
+export {gamma as coolGamma}; //give an alias
+
+const sinTheta=" I am sinTheta";
+const cosTheta=" I am cosTheta";
+
+export {sinTheta,cosTheta}; //exporting multiple values at the same time.
+
+export {lambda} from './c'; //reexporting a value exported from c.ts
+
+### Importing into a module
+
+You can import the values exported from other modules using the import keyword.
+
+You can also provide an alias to the import.
+
+import { alpha as greatAlpha, beta, coolGamma, cosTheta, lambda, sinTheta } from "./a";
+
+If a module contains multiple exports, you can import it all a time using * into an object. Below
+aExports is an object of all the exports from a.ts
+
+import * as aExports from './a';
+
+console.log(aExports.alpha);
+console.log(aExports.beta);
+console.log(aExports.coolGamma);
+console.log(aExports.cosTheta);
+console.log(aExports.sinTheta)
+console.log(aExports.lambda)
+
+### Barrel files
+
+Barrel file exports everything exported from 1 more modules.
+Example: In the barrel folder, index.ts is the barrel file which exports everything from the number.ts
+and string.ts modules.
+
+We can then just import required functionality from this index.ts in any other module.
+We can then import findLength and numFunctions from the ./barrel/index. 
+
+import { findLength,numFunctions} from "./barrel/index";
+
+To provide more abstraction and
+even hide the file i.e index.ts from which the functionality is exported, set moduleResolution to "node" in 
+the tsconfig.json
+
+"moduleResolution": "node",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+
+Now we can update the import statement to the below :
+
+import { findLength,numFunctions} from "./barrel";
+
+### Optionally loading modules
+
+Below is wrong nesting of import statement within condition
+if(condition){
+    import  {something} from './somewhere';
+}
+
+Below is possible and correct with import expression only when module in tsconfig.json is ESnext or commonjs.
+ESNext is a placeholder for future ECMaScript features. ES2015 does not support import expression: import().
+ESNext supports import().
+
+if(condition){
+    import('./somewhere');
+}
+
+Conditionally loading c.ts and printing a value exported from the module.
+
+if(Math.random() >= 0.5){
+    import('./c').then(c=>console.log(c.lambda))
+}
+
+### importing JSON files
+
+To import JSON files, set "resolveJsonModule": true in tsconfig.json
+
+import * as config from './config.json';
+console.log(config);
+
+Will get below error when trying to log the json in the browser:
+
+Failed to load module script: Expected a JavaScript module script but the server responded with a MIME type of "application/json". Strict MIME type checking is enforced for module scripts per HTML spec.
+
+The reason is that only JS files can be modules in ES modules.Some 3rd party loaders like Babel or Webpack
+can allow JSON files to be loaded as modules.
+
+### Ambient Modules
+
+Regular modules implement values and behaviors.
+Ambient modules describe implementations. They are used to describe JS modules.
+
+Ambient modules are a special kind of TS file  that are used to describe the API  that a non-TS file
+exposes.
+
+
+
