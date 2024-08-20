@@ -156,9 +156,101 @@ can allow JSON files to be loaded as modules.
 
 Regular modules implement values and behaviors.
 Ambient modules describe implementations. They are used to describe JS modules.
-
+Ambient modules are referred to as declaration files as well. They have d.ts extension. They must
+have the same file name as the file they describe.
 Ambient modules are a special kind of TS file  that are used to describe the API  that a non-TS file
 exposes.
+
+
+### Manually creating declaration files for JS files
+
+Created a file:cube.js and exported a function findCube().
+To import this module in b.ts, we need to set the property "allowJs" to true in tsconfig.json.
+
+    "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+
+I import the method in b.ts
+
+import { findCube } from "./cube";
+
+When I hover over the {findCube} I see the below:
+(alias) function findCube(num: any): number
+
+If you observe the argument has any type, which is not good. Even if I pass a string,the compiler
+will not complain.
+
+To resolve this, I create a file: cube.d.ts in the root of the project with the below content:
+
+declare module 'cube'{
+    export function findCube(num:number):number;
+}
+
+I mention the type of argument and also the return type of the function.
+
+I get the below error message in the import in b.ts
+File 'c:/Users/User/angular/using-typescript-modules/cube.d.ts' is not a module.ts(2306)
+
+So i update the import to 
+
+import { findCube } from "cube";
+
+console.log(findCube(10))
+
+This will throw the below error in the browser:
+Uncaught TypeError: Failed to resolve module specifier "cube". Relative references must start with either "/", "./", or "../".
+
+### Generating ambient modules or declaration files automatically for .ts files
+
+You need to set "declaration" to true and "allowJS" to false in tsconfig.json.
+
+When you run tsc, you will find d.ts file for every .ts file in the dist folder.
+
+### Module Resolution
+
+It is the process of locating and loading modules.
+
+There are 2 strategies:
+1. Node-default which mirrors NodeJS's module resolution strategy +additional behavior
+2. Classic for backward compatibility
+
+NodeJs uses require function to load modules.
+
+const myModule=require('./somePath') // relative path begins with / or ./ or ../
+
+const myModule=require('somePath') // absolute path
+
+Node Js Relative Imports Strategy
+
+![Alt text](image.png)
+
+If NodeJs doesnt find the module in any of the listed paths, it will throw an error
+
+Node JS Absolute Imports Strtagy
+
+![Alt text](image-1.png)
+
+Typescript Relative imports
+
+![Alt text](image-2.png)
+
+Typescript Absolute Imports
+
+![Alt text](image-3.png)
+
+Additional behavior points in TS over NodeJs module resolution strategy
+
+![Alt text](image-4.png)
+
+### Module resolution tracing
+
+It helps us determine the places Ts looked when trying to resolve a module.
+
+We can enable tracing through command line option or updating tsconfig.json
+
+Set "traceResolution" to true in tsconfig.json
+OR
+tsc --traceResolution
+
 
 
 

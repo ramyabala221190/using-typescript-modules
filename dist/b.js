@@ -4,6 +4,10 @@ if (Math.random() >= 0.5) {
 import { alpha as greatAlpha, beta, coolGamma, cosTheta, sinTheta } from "./a";
 import { findLength, numFunctions } from "./barrel";
 import * as config from './config.json';
+import * as Jq from 'jquery'; // We installed jquery and then also installed @types/jquery as dev dependency
+console.log(Jq);
+import { findCube } from "cube";
+console.log(findCube(10));
 //import * as aExports from './a';
 console.log(greatAlpha);
 console.log(beta);
