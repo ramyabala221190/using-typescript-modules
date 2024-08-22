@@ -6,6 +6,8 @@ import { findLength, numFunctions } from "./barrel";
 import * as config from './config.json';
 import * as Jq from 'jquery'; // We installed jquery and then also installed @types/jquery as dev dependency
 console.log(Jq);
+import { specialStr } from 'deep/special';
+console.log(specialStr);
 import { findCube } from "cube";
 console.log(findCube(10));
 //import * as aExports from './a';

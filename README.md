@@ -252,5 +252,32 @@ OR
 tsc --traceResolution
 
 
+## Path configuration
+
+The baseUrl option tells the compiler where to begin looking when resolving a module.
+
+Path configuration using the paths option in the tsconfig.json allows us to map 1 path onto another path.
+Path mapping can simplify imports or reach modules outside the baseUrl.
+baseUrl must be configured to use path mapping and paths are always relative to the baseUrl.
+
+Example for simplifying imports:
+
+I have created a module special.ts within some/special/deep/paths folder.
+To use this module in b.ts, I have to use this long import:
+import { specialStr } from "./some/special/deep/paths/special";
+
+I can use path alias to make it shorter.
+The key of the paths property must be the name of the new mapped path relative to the baseUrl
+The value is an array of the paths TS must search for that key.
+
+"paths": {
+      "deep/*":["/some/special/deep/paths/*"]
+    },  
+deep/* means deep/<any module name can come here>
+Whenever I use deep/<any module name can come here> in the import path, TS will try to resolve the module
+in "/some/special/deep/paths/*. Again * here means any module name.
+
+Import is now updated to 
+import { specialStr } from 'deep/special';
 
 

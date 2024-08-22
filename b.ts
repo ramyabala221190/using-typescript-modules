@@ -11,6 +11,8 @@ import * as Jq from 'jquery'; // We installed jquery and then also installed @ty
 
 console.log(Jq);
 
+import { specialStr } from "deep/special";
+console.log(specialStr);
 
 import { findCube } from "cube";
 
