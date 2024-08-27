@@ -1,3 +1,18 @@
+### Why use TS modules?
+Front end applications are increasingly complex
+Organisation and structure are critical
+Reuse is the key
+
+Modules are always evaluated in strict mode from version 5. For backward compatibility, we need to add 'use strict' in all files.
+What makes a module a module ?
+As opposed to just the TS or Js file, the presence of the import and/ export statements in the file, will make the file a module.
+As opposed to regular scripts, modules are never evaluated in the global scope. The window object is available to all modules. You cannot access code defined in other modules unless the other module is exported and imported in your module.
+Modules cannot be loaded locally in a html file. You will see CORS errors. You need to have a local web server to test modules during development.
+Module execution is always deferred. The module is loaded asynchronously but not executed unless the ready event is fired i.e html parsing is completed.
+
+![Alt text](image-5.png)
+
+
 ### Project setup
 
 1. C:\Users\User\angular>mkdir using-typescript-modules && cd using-typescript-modules
